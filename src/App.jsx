@@ -12,7 +12,7 @@ function App() {
   return (
     <>
 
-  
+
       {/* <Box sx={{ display: 'flex' }}>
         <Index />
         <Box
@@ -34,34 +34,38 @@ function App() {
           </Routes>
           </Router> */}
 
+      <Chat />
 
-      <Box >
-        <Index />
-        <Box
-          component="main"
-          sx={{
-            flexGrow: 1,
-            p: 3,
-            width: { sm: `calc(100% - 240px)` },
-            ml: { sm: '240px' },
-            mt: '20px'
-          }}
-        >
-          <Routes>
-            <Route path="/" element={<Chat />} />
-            <Route path='/graph' element={<Graph/>} />
-            
-          </Routes>
-        </Box>
-      </Box>
-       
-      
+      {
 
-          </>
+        // <Box >
+        //   <Index />
+        //   <Box
+        //     component="main"
+        //     sx={{
+        //       flexGrow: 1,
+        //       p: 3,
+        //       width: { sm: `calc(100% - 240px)` },
+        //       ml: { sm: '240px' },
+        //       mt: '20px'
+        //     }}
+        //   >
+        //     <Routes>
+        //       <Route path="/" element={<Chat />} />
+        //       <Route path='/graph' element={<Graph/>} />
+        //
+        //     </Routes>
+        //   </Box>
+        // </Box>
 
-    
-      
-    
+      }
+
+
+    </>
+
+
+
+
   )
 }
 

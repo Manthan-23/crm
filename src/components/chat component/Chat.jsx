@@ -1,151 +1,132 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Paper,
-  TextField,
-  IconButton,
-  Typography,
-  Avatar,
-  List,
-  ListItem,
-  ListItemAvatar,
-  Divider,
-} from '@mui/material';
-import { Send as SendIcon, SmartToy as BotIcon } from '@mui/icons-material';
+import { Menu, MessageSquare, Settings, Users, PlusCircle } from 'lucide-react';
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
+const ChatInterface = () => {
+  const [messages, setMessages] = useState([
+    { id: 1, text: "Hello! How can I help you today?", sender: "bot" },
+    { id: 2, text: "Hi! I have a question about...", sender: "user" },
+    { id: 3, text: "Sure, I'd be happy to help with that.", sender: "bot" }
+  ]);
 
+  const [inputMessage, setInputMessage] = useState("");
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
-const Chat = () => {
-
-
-    const [messages, setMessages] = useState([
-        { text: "Hello! How can I help you today?", isBot: true },
-      ]);
-      const [newMessage, setNewMessage] = useState('');
-    
-      const handleSend = () => {
-        if (newMessage.trim()) {
-          // Add user message
-          setMessages([...messages, { text: newMessage, isBot: false }]);
-          
-          // Simulate bot response (replace this with your actual chatbot logic)
-          setTimeout(() => {
-            setMessages(prev => [...prev, {
-              text: "Thanks for your message! I'm a demo chatbot.",
-              isBot: true
-            }]);
-          }, 1000);
-          
-          setNewMessage('');
-        }
-      };
-    
-      const handleKeyPress = (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          handleSend();
-        }
-      };
-
-
-  
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    if (inputMessage.trim()) {
+      setMessages([...messages, {
+        id: messages.length + 1,
+        text: inputMessage,
+        sender: "user"
+      }]);
+      setInputMessage("");
+    }
+  };
 
   return (
-    <>
-   
-   <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Typography variant="h4" gutterBottom sx={{ p: 2 }}>
-        ChatBot
-      </Typography>
-      
-      {/* Messages Area */}
-      <Paper 
-        elevation={3} 
-        sx={{ 
-          flex: 1,
-          mb: 2,
-          overflow: 'auto',
-        //   maxHeight: 'calc(100vh - 300px)',
-          backgroundColor: '#f5f5f5',
-          
-        }}
-        
-      >
-        <List>
-          {messages.map((message, index) => (
-            <React.Fragment key={index}>
-              <ListItem
-                sx={{
-                  justifyContent: message.isBot ? 'flex-start' : 'flex-end',
-                  padding: 2
-                }}
-              >
-                {message.isBot && (
-                  <ListItemAvatar>
-                    <Avatar sx={{ backgroundColor: '#1976d2' }}>
-                      <BotIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                )}
-                <Paper
-                  elevation={1}
-                  sx={{
-                    padding: 2,
-                    maxWidth: '80%',
-                    backgroundColor: message.isBot ? 'white' : '#1976d2',
-                    color: message.isBot ? 'inherit' : 'white'
-                  }}
-                >
-                  <Typography>{message.text}</Typography>
-                </Paper>
-                {!message.isBot && (
-                  <ListItemAvatar sx={{ ml: 2 }}>
-                    <Avatar>{message.isBot ? <BotIcon /> : 'U'}</Avatar>
-                  </ListItemAvatar>
-                )}
-              </ListItem>
-              {index < messages.length - 1 && <Divider variant="fullWidth" component="li" />}
-            </React.Fragment>
-          ))}
-        </List>
-      </Paper>
-
-      {/* Input Area */}
-      <Paper
-        elevation={3}
-        sx={{
-          p: 2,
-          backgroundColor: 'white',
-          position: 'sticky',
-          bottom: 0
-        }}
-      >
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          <TextField
-            fullWidth
-            multiline
-            maxRows={4}
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Type your message..."
-            variant="outlined"
-            size="small"
-          />
-          <IconButton 
-            color="primary" 
-            onClick={handleSend}
-            disabled={!newMessage.trim()}
+    <div className="flex h-screen bg-gray-50">
+      {/* Sidebar */}
+      <div className={`bg-gray-900 text-white transition-all duration-300 ${isSidebarCollapsed ? 'w-16' : 'w-64'
+        }`}>
+        <div className="p-4 flex items-center justify-between">
+          {!isSidebarCollapsed && <h1 className="text-xl font-bold">Chat App</h1>}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+            className="text-white hover:bg-gray-800"
           >
-            <SendIcon />
-          </IconButton>
-        </Box>
-      </Paper>
-    </Box>
-  
+            <Menu className="h-5 w-5" />
+          </Button>
+        </div>
 
-    </>
-  )
-}
+        <nav className="mt-4">
+          <Button
+            variant="ghost"
+            className={`w-full justify-start gap-2 text-white hover:bg-gray-800 ${isSidebarCollapsed ? 'px-4' : 'px-6'
+              }`}
+          >
+            <MessageSquare className="h-5 w-5" />
+            {!isSidebarCollapsed && <span>Messages</span>}
+          </Button>
 
-export default Chat
+          <Button
+            variant="ghost"
+            className={`w-full justify-start gap-2 text-white hover:bg-gray-800 ${isSidebarCollapsed ? 'px-4' : 'px-6'
+              }`}
+          >
+            <Users className="h-5 w-5" />
+            {!isSidebarCollapsed && <span>Contacts</span>}
+          </Button>
+
+          <Button
+            variant="ghost"
+            className={`w-full justify-start gap-2 text-white hover:bg-gray-800 ${isSidebarCollapsed ? 'px-4' : 'px-6'
+              }`}
+          >
+            <Settings className="h-5 w-5" />
+            {!isSidebarCollapsed && <span>Settings</span>}
+          </Button>
+        </nav>
+      </div>
+
+      {/* Main Chat Area */}
+      <div className="flex-1 flex flex-col">
+        {/* Chat Header */}
+        <div className="bg-white border-b p-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+              A
+            </div>
+            <div>
+              <h2 className="font-semibold">AI Assistant</h2>
+              <p className="text-sm text-gray-500">Online</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Messages Area */}
+        <ScrollArea className="flex-1 p-4">
+          <div className="space-y-4">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"
+                  }`}
+              >
+                <div
+                  className={`max-w-[70%] rounded-lg p-3 ${message.sender === "user"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-gray-900"
+                    }`}
+                >
+                  {message.text}
+                </div>
+              </div>
+            ))}
+          </div>
+        </ScrollArea>
+
+        {/* Input Area */}
+        <form onSubmit={handleSendMessage} className="border-t bg-white p-4">
+          <div className="flex gap-2">
+            <Input
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              placeholder="Type your message..."
+              className="flex-1"
+            />
+            <Button type="submit">
+              Send
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default ChatInterface;
