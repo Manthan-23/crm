@@ -110,6 +110,14 @@ const ChatInterface = () => {
             <Settings className="h-5 w-5" />
             {!isSidebarCollapsed && <span>Settings</span>}
           </Button>
+          <Link to="/graph"><Button
+            variant="ghost"
+            className={`w-full justify-start gap-2 text-white hover:bg-gray-800 ${isSidebarCollapsed ? 'px-4' : 'px-6'
+              }`}
+          >
+            <Users className="h-5 w-5" />
+            {!isSidebarCollapsed && <span>Graph</span>}
+          </Button></Link>
         </nav>
       </div>
 
