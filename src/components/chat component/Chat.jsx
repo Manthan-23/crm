@@ -3,6 +3,7 @@ import { Menu, MessageSquare, Settings, Users, PlusCircle } from 'lucide-react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Link } from 'react-router-dom';
 
 const ChatInterface = () => {
   const [messages, setMessages] = useState([
@@ -32,7 +33,7 @@ const ChatInterface = () => {
       <div className={`bg-gray-900 text-white transition-all duration-300 ${isSidebarCollapsed ? 'w-16' : 'w-64'
         }`}>
         <div className="p-4 flex items-center justify-between">
-          {!isSidebarCollapsed && <h1 className="text-xl font-bold">Chat App</h1>}
+          {!isSidebarCollapsed && <h1 className="text-xl font-bold">CRM</h1>}
           <Button
             variant="ghost"
             size="icon"
@@ -50,17 +51,17 @@ const ChatInterface = () => {
               }`}
           >
             <MessageSquare className="h-5 w-5" />
-            {!isSidebarCollapsed && <span>Messages</span>}
+            {!isSidebarCollapsed && <span>Chatbot</span>}
           </Button>
 
-          <Button
+          <Link to="/recommend"><Button
             variant="ghost"
             className={`w-full justify-start gap-2 text-white hover:bg-gray-800 ${isSidebarCollapsed ? 'px-4' : 'px-6'
               }`}
           >
             <Users className="h-5 w-5" />
-            {!isSidebarCollapsed && <span>Contacts</span>}
-          </Button>
+            {!isSidebarCollapsed && <span>Recommendation</span>}
+          </Button></Link>
 
           <Button
             variant="ghost"
