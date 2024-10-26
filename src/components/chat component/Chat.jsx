@@ -12,20 +12,59 @@ const ChatInterface = () => {
     { id: 3, text: "Sure, I'd be happy to help with that.", sender: "bot" }
   ]);
 
+  const API_URL = "http://localhost:7000"; // API endpoint
+  // const API_URL = "http://10.1.133.239:7000"; // API endpoint
+
   const [inputMessage, setInputMessage] = useState("");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = async (e) => {
     e.preventDefault();
     if (inputMessage.trim()) {
-      setMessages([...messages, {
+      const userMessage = {
         id: messages.length + 1,
         text: inputMessage,
-        sender: "user"
-      }]);
+        sender: "user",
+      };
+      setMessages([...messages, userMessage]);
       setInputMessage("");
+
+      try {
+        const response = await fetch(`${API_URL}/get_response/`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: inputMessage, project_name: "default_project" }),
+        });
+
+        const data = await response.json();
+        const botMessage = {
+          id: messages.length + 2,
+          text: data.response.explanation || "I'm sorry, I couldn't process your request.",
+          sender: "bot",
+        };
+        setMessages((prevMessages) => [...prevMessages, botMessage]);
+      } catch (error) {
+        console.error("Error fetching bot response:", error);
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { id: messages.length + 2, text: "Error processing your request.", sender: "bot" },
+        ]);
+      }
     }
   };
+
+
+  // const handleSendMessage = (e) => {
+  //   e.preventDefault();
+  //   if (inputMessage.trim()) {
+  //     setMessages([...messages, {
+  //       id: messages.length + 1,
+  //       text: inputMessage,
+  //       sender: "user"
+  //     }]);
+  //     setInputMessage("");
+  //   }
+  // };
 
   return (
     <div className="flex h-screen bg-gray-50">
